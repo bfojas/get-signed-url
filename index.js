@@ -4,12 +4,12 @@ const s3 = new AWS.S3({
 });
 
 exports.handler = async (event, context, callback) => {
-    const params = {Bucket: process.env.BUCKET_NAME, Key: JSON.parse(event.body).fileName};
+    const params = {Bucket: process.env.BUCKET_NAME, Key: event["body"].fileName};
     try {
     const url = await s3.getSignedUrl('putObject', params);
     const response = {
         statusCode: 200,
-        body: JSON.stringify({"url": url})
+        body: {"url": url}
     };
     return response;
     } catch(err) {
